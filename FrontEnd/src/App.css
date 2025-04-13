@@ -1,0 +1,906 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat", sans-serif;
+    min-height: 100dvh;
+    background: url('./images/Background.png');
+    color: #e0e0e0;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;         /* This makes it fill the screen */
+    background-position: center; 
+    overflow-x: hidden; /* prevent horizontal scroll */
+    background-attachment: fixed;
+    background-color: #2E1E20;
+}
+
+.LandingContainer{
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat", sans-serif;
+    min-height: 100vh;
+    min-width: 100vw;
+    background: url('./images/Background.png');
+    background-repeat: no-repeat;
+    background-size: cover;         /* This makes it fill the screen */
+    background-position: center; 
+    color: #e0e0e0;
+    width: 100%;
+    overflow-x: hidden; /* prevent horizontal scroll */
+    background-attachment: fixed;
+    background-color: #2E1E20;
+}
+
+.logo{
+height: 1.8em;
+padding-right: 0.3em;
+padding-left: 0.5em;
+}
+
+.navBar{
+    display: flex;
+    align-items: center;
+    margin: 0;
+    height: 3.8em;
+    padding-left: 0.7em;
+    padding-right: 0.7em;
+    color: #dddddd;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-bottom: 0.05em solid #67676744;  /* Add a white top border */
+
+}
+
+
+.navBarimg{
+   width: 2em;
+   height: 1.8em;
+   color: #eeeeee;
+}
+
+.navUnder{
+    border-bottom: 0.05em solid #67676744;  /* Add a white top border */
+    display: flex;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 0.6em;
+    justify-content: center;
+    gap: 1em;
+    margin-bottom: 0.5em;
+}
+
+.navUnder .recentBtn{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    color: white;
+    background: #18181B;
+    
+    font-size: 0.8em;
+    border-radius: 0.5em;
+    height: 2.3em;
+    border: 0.05em solid #67676744;  /* Add a white top border */
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+}
+
+.activeFilterButton{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    color: rgba(0, 0, 0, 1);
+    background: rgba(255, 255, 255, 1);
+    font-size: 0.8em;
+    border-radius: 0.5em;
+    height: 2.3em;
+    border: 0.05em solid #67676744;  /* Add a white top border */
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+}
+
+
+.navUnder .popularBtn{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    color: white;
+    background: #18181B;
+    font-size: 0.8em;
+    border-radius: 0.5em;
+    height: 2.3em;
+    border: 0.05em solid #67676744;  /* Add a white top border */
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+}
+
+.iconUnderNav{
+    height: 1.2em;
+    padding-right: 0.3em;
+}
+
+
+.personIcon {
+    width: 1.9em !important;
+    height: 1.4em;
+    color: #eeeeee;
+ }
+
+
+.sideBar {
+    position: fixed;  /* Fixed positioning to overlay the sidebar */
+    border-radius: 1em;
+    top: 0;
+    left: 0;
+    width: 17em;
+    height: 100%;
+    background-color: rgba(20, 20, 20, 0.907); /* semi-transparent dark background */
+    backdrop-filter: blur(10px); /* this applies the blur effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.32);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 1000; /* Ensure it's above everything else */
+    overflow-y: auto;         /* Enables vertical scrolling inside the sidebar */
+    overscroll-behavior: contain; /* Prevents scroll chaining to body on mobile */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    max-height: 100vh;
+}
+
+.sideBarBackBtn{
+    height: 2em;
+    width: 2em;
+}
+
+.topContainer{
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    
+}
+
+.sideBar .header{
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+
+.channelList{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+
+.channelIcon{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95em;
+    background-color: rgba(255, 255, 255, 0.04);
+    border-radius: 1em;
+
+
+}
+
+.channelIcon img{
+    height: 2.5em;
+    width: 2.5em;
+    border-radius: 100%;
+    
+}
+
+.schoolPrevContainer{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+
+}
+
+.schoolPrevContainer img{
+    height: 2.5em;
+    width: 2.5em;
+    border-radius: 100%;
+    
+}
+
+.prevNameAndLockContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.prevNameAndLockContainer p{
+    margin: 0;
+    padding-bottom: 0.1em;
+    color: rgba(255, 255, 255, 1);
+    font-weight: 400;
+
+}
+
+.containerLockPrivate{
+    display: flex;
+    align-items: center;
+    gap:0.4em;
+
+}
+
+.privateP{
+    font-weight: 400;
+    color: rgba(190, 190, 190, 1);
+
+
+}
+
+
+.bottomNavBackdrop{
+    display: flex;
+    align-items: center; /* 🔼 Vertically centers the child */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(20, 20, 20, 0.5); /* semi-transparent dark background */
+    backdrop-filter: blur(10px); /* this applies the blur effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    padding: 1.6em 0;
+    padding-bottom: 2.8em;
+    border-top: 1px solid rgba(255, 255, 255, 0.1); 
+    height: 1.7em;
+
+
+}
+
+.bottomNavContainer{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    padding-top: 1em;
+    padding-bottom: 1.3em;
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: 0.6em;
+    margin-left: 0.6em;
+    border-radius: 1.6em;
+    width: 100%;
+
+}
+
+.bottomNavIcons{
+    width: 1.7em !important;
+    height: 1.8em;
+    color: #eeeeee;
+    padding-top: 0.2em;
+}
+
+.postContainer{
+    width: auto;
+    height: 13em;
+    background: rgba(255, 255, 255, 0); /* Light transparent background for contrast */
+    border-bottom: 0.05em solid #67676777;  /* Add a white top border */
+    padding-left: 1em;
+    padding-right: 1em;
+    color: white;
+    padding-top: 0.35em;
+}
+
+.postTop{
+    display: grid;
+    grid-template-columns: 3em  15em;
+    grid-template-rows: 1em 1em; /*size of row */
+    grid-template-areas:
+    "logo channelTime"
+    "logo university"; /* Define layout: first row is logo + channel + time, second row is logo + university */
+    align-items: center;
+    padding-top: 1em;
+    padding-bottom: 1em;
+
+}
+
+.postTop .channelTime {
+    display: flex;
+    align-items: center;
+    grid-area: channelTime; /* Define the area for channel, time, and follow/unfollow */
+    font-size: 0.9em;
+    gap: 0.5em;
+    width: 17em;
+  }
+
+  .postTop .channelTime .channel{
+    font-weight: 600;
+    padding-right: 0.5em;
+  }
+
+  .postTop .channelTime .time{
+    color: rgba(255, 255, 255, 0.681);
+  }
+
+  .postTop .channelTime .ifFollow{
+    font-weight: 600;
+    padding-left: 0.5em;
+  }
+
+/* Styling for the university name */
+.postTop .university {
+  grid-area: university; /* Define the area for the university name */
+  font-size: 0.8em;
+  padding-top: 0.5em;
+
+}
+  
+
+.postTop img{
+    height: 2em;
+    width: 2em;
+    border-radius: 100%;
+    grid-area: logo;
+    justify-self: center; /* Center the image horizontally */
+    align-self: center; /* Center the image vertically */
+}
+
+.postBody{
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.8em;
+
+}
+
+.postBody .title{
+    margin-top: 0.5em;
+    margin-bottom: 0;
+}
+
+.postBody .summary{
+    margin-top: 0.5em;
+}
+
+.postBottom{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 0.4em;
+    
+}
+
+.iconAndCountContainer{
+    display: flex;
+    align-items: center;
+    width: 3.6em;
+    justify-content: space-evenly;
+    height: 1em;
+}
+
+
+.reccomendedContainer{
+    border-bottom: 0.05em solid #67676744;  /* Add a white top border */
+    padding-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.9em;
+    margin-top: 3.5em;
+}
+
+.suggestedHeader{
+    font-weight: bolder;
+    font-size: 1.4em;
+    margin: 0;
+    margin-bottom: 0.5em;
+    padding-left: 0.4em;
+}
+
+.recomendedTilesContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 1.2em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+
+}
+
+.recomendedTilesContainer::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}
+
+
+.channelTile{
+    flex: 0 0 auto; /* Prevent shrinking, allow horizontal scroll */
+    scroll-snap-align: start;
+    
+    position: relative;
+    width: 10.4em;
+    height: 11.2em;
+    border-radius: 1.9em;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;      /* avoid repeating */
+
+    
+}
+
+
+
+.channelOverlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 0.7) 100%
+    );
+    display: flex;
+    align-items: flex-end;
+    justify-content: left;
+    color: white;
+    font-weight: 600;
+    border-radius: 1.9em;
+}
+
+.tileTextContainer{
+    display: flex;
+    flex-direction:column;
+    justify-content:end;
+    align-items: center;
+    height:100%;
+    margin-bottom: 0.75em;
+    padding-left: 0.4em;
+}
+
+.channelName {
+    color: white;
+    font-weight: 800;
+    font-size: 0.9em;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+    width: 90%;
+    margin: 0;
+    padding-top: 0.3em;
+
+  }
+
+.channelSummary{
+    color: white;
+    font-weight: 500;
+    font-size: 0.8em;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+    width: 90%;
+    color: #dcdcdc;
+    margin: 0;
+
+  }
+
+.gradientText{
+    background: linear-gradient(90deg, #83D5EC 0%, #A288D3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text; /* standard */
+    color: transparent;
+}
+
+.LandingContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.welcomeContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin-top: 5em;
+
+}
+
+.welcomeText{
+    font-weight: 500;
+    font-size: 1.2em;
+    text-align: center;
+    margin: 0;
+    padding-bottom: 0.2em;
+}
+.welcomeContainer .bottomText{
+    font-weight: 700;
+    font-size: 2em;
+    text-align: center;
+    margin: 0;
+    padding-bottom: 0.4em;
+
+}
+
+.welcomeContainer .divMiddle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.welcomeContainer .summary{
+    font-weight: 400;
+    text-align: center;
+    margin: 0;
+    margin-top: 1.9em;
+    width: 85%;
+    line-height: 1.5em;
+    font-size: 0.9em;
+}
+
+.getStartedBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 8.3em;
+    height: 2.6em;
+    text-align: center;
+    border-radius: 1.2em;
+    margin-top: 2em;
+    color:  #ffffff;
+    background: linear-gradient(90deg, #83D5EC 0%, #A288D3 100%);
+    background-size: 200% 100%; /* Make the gradient bigger to allow movement */
+    background-position: 100% 0; /* Start position of the gradient */
+    border: none;
+    animation: gradientMove 15s linear infinite; /* Animate background-position continuously */
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+@keyframes gradientMove {
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+}
+
+.blackOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: black;
+    z-index: 10;
+    pointer-events: none; /* so it doesn't block interaction */
+  }
+  
+.logInFieldContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 5em;
+    margin-top: 12em;
+    
+    
+
+}
+
+form, input, button {
+    all: unset; /* resets most styles */
+    box-sizing: border-box;
+  }
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap:1.6em
+
+    
+  }
+
+
+.formInput{
+    width: 63%;
+    background: linear-gradient(90deg, rgba(131, 213, 236, 0.15) 0%, rgba(162, 136, 211, 0.15) 100%);
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-radius: 5px;
+    font-weight: 500;
+    height: 2.7em;
+    font-size: 0.9em;
+    padding-left: 1.7em;
+    color:rgba(147, 147, 147, 1);
+
+
+
+}
+
+.submitBtn{
+    width: 35%;
+    background: rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, 1);
+    font-weight: 700;
+    border-radius: 8px;
+    text-align: center;
+    height: 2.3em;
+    box-shadow: 0px 1px 18.4px 0px rgba(255, 255, 255, 0.2);
+
+
+}
+
+.signUpLinkContainer{
+    margin: 0;
+    margin-top: 5.5em;
+}
+
+.signUpLinkContainer span{
+    color:rgba(255, 255, 255, 1);
+    font-weight: 500;
+    
+}
+
+.trendingContainer{
+    margin: 0;
+    display:flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-left: 1em;
+    border-bottom: 0.05em solid #67676744;  /* Add a white top border */
+    height: 11.5em;
+
+}
+
+.trendingContainer h4{
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+    margin-top: 1.4em;
+    margin-bottom: 0.9em;
+}
+
+.trendingChannels{ /*For the div containing all tiles*/
+    display: flex;
+    flex-direction: row;
+    gap: 1.2em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 1em;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    margin-bottom: 1em;
+
+}
+
+
+.trendingChannels::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}
+
+
+
+.trendingTileContainer{/*For the div containing an indivdual tile*/
+    display: flex;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    gap: 0.2em;
+    background: linear-gradient(180deg, #1A1A1A 0%, #291C2B 100%);
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.25);
+    min-width: 8em;
+    height: 5.5em;
+    border-radius: 17px;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+}
+
+.trendingTileContainer img{
+    height: 2.2em;
+    width: 2.2em;
+    border-radius: 1.2em;
+    margin-left: 0.7em;
+    
+}
+
+.trendingTileContainer .middleTextTrending{
+    margin: 0;
+    padding: 0;
+    font-weight: 700;
+    font-size: 0.8em;
+    margin-left: 1em;
+}
+
+.trendingTileContainer .bottomTextTrending{
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-size: 0.7em;
+    color: rgba(190, 190, 190, 1);
+    margin-left: 1.2em;
+
+}
+
+.filterHeader{
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+    padding-top: 1.4em;
+    margin-left: 1.3em;
+    font-size: 0.9em;
+}
+
+.overlay{
+    background: rgba(0, 0, 0, 0.172);
+}
+
+.channelPageContainer{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.channelPageTitle{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 17em;
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+    justify-content: space-between; /* Push children to top and bottom */
+}
+
+.titleBottomBar{
+    width: 100%;
+    background-color: rgba(20, 20, 20, 0.929); /* semi-transparent dark background */
+    backdrop-filter: blur(10px); /* this applies the blur effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.533);
+    color: white;
+    height: 2.5em;
+    border-top-right-radius: 1.8em;
+    border-top-left-radius: 1.8em;
+    display: flex;
+    align-items: center;
+}
+
+.channelFilterPostsBtn{
+    background: rgba(53, 53, 53, 1);
+    border-radius: 0.7em;
+    font-weight: 500;
+    color: rgba(190, 190, 190, 1);
+    width: 6em;
+    height: 1.7em;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    padding-left: 0.5em;
+    padding-right: 0.6em;
+    margin-left: 1em;
+
+}
+
+
+.channelInfoContainer{
+    background-color: rgba(20, 20, 20, 0.907); /* semi-transparent dark background */
+    backdrop-filter: blur(10px); /* this applies the blur effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.32);
+    color: white;
+    box-shadow: 1px 2px 0px 0px rgba(41, 41, 41, 0.627);
+    width: 92%;
+    height: 8.9em;
+    border-top-right-radius: 1em;
+    border-bottom-right-radius: 1em;
+    margin-top: 4.2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 1em;
+
+
+}
+
+.channelInfoContainer .topRow{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:1em;
+    height: 4.1em;
+}
+
+.channelInfoContainer .topRow img{
+    margin: 0;
+    height: 2.3em;
+    width: 2.3em;
+    border-radius: 100%;
+    justify-self: center; /* Center the image horizontally */
+    align-self: center; /* Center the image vertically */
+}
+
+.channelInfoContainer .nameAndFCountContainer{
+    display: flex;
+    flex-direction: column;
+    width: 11.6em;
+
+
+}
+
+.ifFollowBtn{
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(90deg, #83D5EC 0%, #A288D3 100%);
+    font-weight: 700;
+    height: 2.1em;
+    width: 5.6em;
+    text-align: center;
+    border-radius: 1em;
+
+}
+
+.channelInfoContainer .nameAndFCountContainer h3{
+    margin: 0;
+    padding: 0;
+    color: rgba(255, 255, 255, 1);
+    font-weight: 700;
+    font-size: 1.2em;
+
+}
+
+.channelInfoContainer .followerCountRow{
+    margin: 0;
+    display: flex;
+    align-items: center;
+
+
+}
+
+.channelInfoContainer .followerCountRow span{
+    margin: 0;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    font-size: 0.8em;
+
+}
+
+.channelInfoContainer .followerCountRow .globe{
+    margin: 0;
+    padding-right: 0.4em;
+    width: 1.0em;
+    height: 1.0em;
+}
+
+.bottomRow{
+    width: 90%;
+}
+
+.bottomRow .summary{
+    margin: 0;
+    color: rgba(190, 190, 190, 1);
+    font-weight: 400;
+    font-size: 0.9em;
+
+}
+
+.channelPageBodyContainer{
+    background-color: rgba(20, 20, 20, 0.836); /* semi-transparent dark background */
+    backdrop-filter: blur(10px); /* this applies the blur effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.533);
+}
+
+.timeChannel{
+    color: rgba(255, 255, 255, 0.681);
+}
