@@ -4,9 +4,11 @@ import SchoolSideBarPrev from './SchoolSideBarPrev';
 import {ReactComponent as Back} from '../images/arrow-left.svg';
 import { motion } from 'framer-motion';
 import { useEffect } from "react";
+import { useUser } from './UserContext';
+
 
 function SideBar({ isMenuOpen, toggleMenu, channels, schoolData }) {
-
+  const { userId } = useUser();
   useEffect(() => {//this will toggle off this property for the body so that it is not scrollable and only the sidebar is
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -32,14 +34,16 @@ function SideBar({ isMenuOpen, toggleMenu, channels, schoolData }) {
           <h4 className='header'>My School</h4>
           <Back onClick={toggleMenu} className="sideBarBackBtn" />
         </div>
-        <SchoolSideBarPrev name={schoolData.name} icon={schoolData.icon}/>
+        <Link to={`/channel/${schoolData.school_channel_id}`} key={schoolData.school_channel_id} state={{userId}} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <SchoolSideBarPrev name={schoolData.school_channel_name} icon={schoolData.school_channel_photo}/>
+        </Link>
 
         <h4 className='header'>Following</h4>
 
         <div className="channelList">
             {channels.map((channel) => (
-              <Link to={`/channel/${channel.id}`} key={channel.id} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <ChannelSideBarPrev name={channel.name} icon={channel.icon}/>
+              <Link to={`/channel/${channel.channel_id}`} key={channel.channel_id} state={{userId}} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <ChannelSideBarPrev name={channel.channel_name} icon={channel.channel_photo_url}/>
               </Link>
             ))}
           </div>

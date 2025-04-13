@@ -28,6 +28,7 @@ with app.app_context():
 
 # Base route
 @app.route('/')
+@cross_origin()#make this specific route CORS capable
 def index():
     return "Hello"
 
@@ -68,27 +69,28 @@ def get_time_since(post_time):
         return "now"
     if seconds < 3600:  # less than 60 minutes
         minutes = seconds // 60
-        return f"{int(minutes)} min"
+        return f"{int(minutes)}min"
     if seconds < 86400:  # less than 24 hours
         hours = seconds // 3600
-        return f"{int(hours)} hr"
+        return f"{int(hours)}hr"
     
     days = seconds / 86400  # 86400 seconds in a day
     if days < 7:
-        return f"{int(days)} d"
+        return f"{int(days)}d"
     if days < 30:
         weeks = days // 7
-        return f"{int(weeks)} wk"
+        return f"{int(weeks)}wk"
     if days < 365:
         months = days // 30
-        return f"{int(months)} mon"
+        return f"{int(months)}mon"
     years = days // 365
-    return f"{int(years)} yr"
+    return f"{int(years)}yr"
 
 
 
 # Login route
 @app.route('/login', methods=['POST'])
+@cross_origin()#make this specific route CORS capable
 def login():
     data = request.get_json()
     
@@ -100,13 +102,14 @@ def login():
 
         user = db.session.query(User).filter_by(username=username).first()
         if user and user.password == password:
-            return jsonify({"message": "Login successful"}), 200
+            return jsonify({"message": "Login successful", "user_id": user.id}), 200
         else:
             return jsonify({"message": "Invalid username or password"}), 401
         
 
 # sign up API
 @app.route('/signup', methods = ['PUT'])
+@cross_origin()#make this specific route CORS capable
 def signup():
     data = request.get_json() #retrieve data from front-end
     
@@ -160,7 +163,7 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        return jsonify({"message": "Signup successful"}), 201
+        return jsonify({"message": "Signup successful", "user_id": new_user.id}), 201
     
 
 # Trending channels endpoint
@@ -194,6 +197,7 @@ def trending_channels():
         )
         .join(Post, Channel.id == Post.channel_id)
         .join(ChannelCategory, Channel.category == ChannelCategory.id)
+        .filter(Channel.affiliated_school_id == None)  # Exclude affiliated channels
         .group_by(Channel.id, photo_url_subq, banner_url_subq, ChannelCategory.name)
         .order_by(func.sum(Post.view_count).desc())
         .offset(offset)
@@ -204,11 +208,7 @@ def trending_channels():
     # Build the channels list with the specified fields.
     channels_list = []
     for channel, total_views, channel_photo_url, channel_banner_url, channel_category_name in trending:
-        # Use channel.channel_name if available; otherwise fallback to channel.name.
-        display_name = getattr(channel, "channel_name", None)
-        if not display_name:
-            display_name = getattr(channel, "name", "N/A")
-        
+        display_name = getattr(channel, "channel_name", "N/A")
         channels_list.append({
             "display_name": display_name,
             "channel_id": channel.id,
@@ -216,16 +216,16 @@ def trending_channels():
             "channel_photo_url": channel_photo_url,
             "channel_banner_url": channel_banner_url
         })
-    
-    response = {
+
+    return jsonify({
         "length": len(channels_list),
         "channels": channels_list
-    }
+    }), 200
 
-    return jsonify(response), 200
 
 #popular_post Endpoint
 @app.route('/popular_posts', methods = ['GET'])
+@cross_origin()#make this specific route CORS capable
 def popular_posts():
     # Retrieve offset from the query string (default = 0) and ensure it's an integer.
     offset = request.args.get('offset', default=0, type=int)
@@ -301,6 +301,7 @@ def popular_posts():
     
 
 @app.route('/recent_followed_posts', methods=['GET'])
+@cross_origin()#make this specific route CORS capable
 def recent_followed_posts():
     # Retrieve required query string parameters
     user_id = request.args.get("user_id", type=str)
@@ -387,6 +388,7 @@ def recent_followed_posts():
 
 
 @app.route('/sidbebar_info', methods=['GET'])
+@cross_origin()#make this specific route CORS capable
 def sidbebar_info():
     # Retrieve the required query parameter.
     user_id = request.args.get("user_id", type=str)
@@ -431,8 +433,11 @@ def sidbebar_info():
               .limit(1)
               .scalar_subquery()
         )
-        .filter(Channel.affiliated_school_id == school.id,
-                Channel.id != main_channel.id)
+        .join(ChannelFollow, ChannelFollow.channel_id == Channel.id)
+        .filter(
+            ChannelFollow.user_id == user_id
+        )
+        .filter(Channel.affiliated_school_id == None)
         .all()
     )
 
@@ -454,6 +459,7 @@ def sidbebar_info():
     return jsonify(response), 200
 
 @app.route('/channel_info_for_user', methods=['GET'])
+@cross_origin()#make this specific route CORS capable
 def channel_info_for_user():
     # Retrieve query parameters: user_id and channel_id.
     user_id = request.args.get("user_id", type=str)
@@ -491,7 +497,7 @@ def channel_info_for_user():
         "channel_name": channel.channel_name,
         "channel_id": channel.id,
         "channel_desc": channel.description,
-        "is_private": getattr(channel, "is_private", False),  # defaults to False if not defined
+        "is_private": channel.affiliated_school_id is not None,
         "follower_count": follower_count,
         "channel_photo": channel_photo,
         "channel_banner": channel_banner
@@ -500,6 +506,7 @@ def channel_info_for_user():
 
 #channel_posts_for_user
 @app.route('/channel_posts', methods=['GET'])
+@cross_origin()#make this specific route CORS capable
 def channel_posts():
     # Retrieve the required query parameter.
     user_id = request.args.get("user_id", type=str)
@@ -600,8 +607,33 @@ def channel_posts():
     
     return jsonify({"post": posts_list})
 
+# School Main Channel ID
+@app.route('/school_main_channel_id', methods=['GET'])
+@cross_origin()  # Allow CORS for this route
+def school_main_channel_id():
+    user_id = request.args.get("user_id", type=str)
+    
+    if not user_id:
+        return jsonify({"error": "Missing user_id parameter"}), 400
+
+    # Retrieve user
+    user = db.session.query(User).filter(User.id == user_id).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    # Retrieve school
+    school = db.session.query(School).filter(School.id == user.school_id).first()
+    if not school:
+        return jsonify({"error": "User's school not found"}), 404
+
+    if not school.main_channel_id:
+        return jsonify({"error": "School does not have a main channel assigned"}), 404
+
+    return jsonify({"school_channel_id": str(school.main_channel_id)}), 200
+
+
 
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=os.getenv('DEBUG'))

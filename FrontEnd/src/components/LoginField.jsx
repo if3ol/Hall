@@ -1,18 +1,20 @@
 import { useState } from "react";
 import {motion} from "framer-motion";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "./UserContext";
 
 function LogInField({ registerToggle }) {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [userId, setUserId] = useState(null); // To store the returned user ID
+  const { userId, setUserId } = useUser(); // ✅ use context
+  const navigate = useNavigate(); // ✅ initialize navigate
     
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -26,8 +28,10 @@ function LogInField({ registerToggle }) {
       const data = await response.json();
 
       if (response.ok) {
-        setUserId(data.userId); // Store the userId from response
-        console.log('Logged in. User ID:', data.userId);
+        console.log(data)
+        setUserId(data.user_id); // ✅ update global context
+        console.log("Logged in. User ID:", data.user_id);
+        navigate("/home"); // ✅ redirect immediately
         // Proceed to redirect or update auth context
       } else {
         console.error('Login failed:', data.message);
@@ -38,10 +42,6 @@ function LogInField({ registerToggle }) {
     }
   };
 
-  // ✅ Automatically redirect if logged in
-  if (userId) {
-    return <Navigate to="/home" state={{ userId }}/>;
-  }
   
     return (
       <motion.div 

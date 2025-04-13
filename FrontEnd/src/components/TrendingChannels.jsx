@@ -7,7 +7,7 @@ function TrendingChannels({ data, userId }) {
             <h4>Trending Channels</h4>
             <div className="trendingChannels">
                 {data.map((tile) => (
-                    <Link to={`/channel/${tile.id}`} key={tile.id} userId={userId} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <Link to={`/channel/${tile.channel_id}`} key={tile.channel_id} state={{ userId }} style={{ textDecoration: 'none', color: 'inherit' }}>
                         <TrendingTiles  logo={tile.channel_photo_url} name={tile.display_name} category={tile.category}/>
                     </Link>
                 ))}

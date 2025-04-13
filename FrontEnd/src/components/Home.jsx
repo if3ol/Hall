@@ -6,6 +6,7 @@ import TrendingChannels from './TrendingChannels';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useUser } from './UserContext';
 
 
 function Home() {
@@ -36,12 +37,11 @@ function Home() {
 
 
     const location = useLocation();
-    //const userId = location.state?.userId;//userId passed from login
-    const userId = "2bdf827f-4219-4031-bce5-3010fe482d7d";
+    const { userId } = useUser();
     const isHome = location.pathname === '/' || location.pathname === '/home';
 
     const [filterType, setFilterType] = useState('recent');//choose filter type inside the component
-    const [posts, setPosts] = useState([]); //will hold posts
+    const [posts, setPosts] = useState(null); //will hold posts
     const [loading, setLoading] = useState(false);//say if we are loading
     const [error, setError] = useState(null); //error handilign
     const [trendingChannels, setTrendingChannels] = useState([]);
@@ -54,7 +54,7 @@ function Home() {
   useEffect(() => {
     const fetchTrendingChannels = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/trending_channels');
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/trending_channels`);
         if (!response.ok) throw new Error('Failed to fetch trending channels');
         const data = await response.json();
         setTrendingChannels(data);
@@ -69,18 +69,20 @@ function Home() {
 
   // Fetch posts when filterType changes or on initial render
   useEffect(() => {
+    if (!userId) return;
     const fetchPosts = async () => {
       setLoading(true);
       setError(null);
       try {
         const response = await fetch(
-          filterType === 'recent' ? '/api/posts/recent' : '/api/posts/popular'
+          filterType === 'recent' ? `${process.env.REACT_APP_API_BASE_URL}/recent_followed_posts?user_id=${userId}&offset=0&limit=10` : `${process.env.REACT_APP_API_BASE_URL}/popular_posts?offset=0&limit=10`
         );
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
         setPosts(data);
+        console.log(data)
       } catch (err) {
         setError(err.message);
       } finally {
@@ -89,9 +91,12 @@ function Home() {
     };
 
     fetchPosts();
-  }, [filterType]);
+  }, [filterType, userId]);
 
-
+    console.log(posts,"gg");
+    if (!userId) {
+      return <div>Loading user...</div>;
+    }
     return (
       <div>
         <NavBar userId={userId}/>
@@ -105,23 +110,24 @@ function Home() {
             <PostFilter filterType={filterType} toggle={toggleFilterType} />
           </div>}
         <div className='overlay'>
-          {data.map((post, index) => (
-          <Post
-            key={index}
-            channel={post.channel}
-            channelLogo={post.channelLogo}
-            linkToChannel={post.linkToChannel}
-            time={post.time}
-            ifFollow={post.ifFollow}
-            school={post.school}
-            title={post.title}
-            bodySummary={post.bodySummary}
-            numOfLikes={post.numOfLikes}
-            numOfComments={post.numOfComments}
-            views={post.views}
-            linkToPost={post.linkToPost}
-          />
-        ))}
+        {posts && posts.posts_previews && posts.posts_previews.map((post, index) => (
+        <Post
+          key={index}
+          channelId={post.channel_id}
+          channel={post.channel_name}
+          channelLogo={post.channel_photo_url}
+          linkToChannel={post.linkToChannel}
+          time={post.time_since_post}
+          ifFollow={true}
+          school={post.user_school}
+          title={post.title}
+          bodySummary={post.content_preview}
+          numOfLikes={post.likes_count}
+          numOfComments={post.comments_count}
+          views={post.views_count}
+          linkToPost={post.linkToPost}
+        />
+      ))}
       </div>
 
         <BottomNav />

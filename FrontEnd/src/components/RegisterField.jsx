@@ -69,7 +69,7 @@ function RegisterField({ registerToggle }) {
         />
 
         <button type="submit" className="submitBtn">
-          Log In
+          Register
         </button>
       </form>
 

@@ -5,6 +5,8 @@ import {ReactComponent as Globe} from '../images/globe.svg'
 import {ReactComponent as Lock} from '../images/lock.svg'
 import { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
+import { useUser } from './UserContext';
+import LoadingScreen from './LoadingScreen';
 
 //***Test Data***//
 const data = {
@@ -34,24 +36,24 @@ const data = {
 
 //channel will be routed with the channelId and we make a fetch call here
 function ChannelPage() {
-  const { channelId } = useParams();
-  const location = useLocation();
 
-  const userId = location.userId;//userId passed from login
+  const { channelId } = useParams();
+  const { userId } = useUser();
+  
 
   const [channelData, setChannelData] = useState(null);
   const [channelPosts, setChannelPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  useEffect(() => { //finished here need to connect the data
     const fetchChannelData = async () => {
       try {
         setLoading(true);
 
         // Replace with actual API endpoints
-        const channelRes = await fetch(`/api/channels/${channelId}`);
-        const postRes = await fetch(`/api/channels/${channelId}/posts`);
+        const channelRes = await fetch(`${process.env.REACT_APP_API_BASE_URL}/channel_info_for_user?user_id=${userId}&channel_id=${channelId}`);
+        const postRes = await fetch(`${process.env.REACT_APP_API_BASE_URL}/channel_posts?user_id=${userId}&channel_id=${channelId}`);
 
         if (!channelRes.ok || !postRes.ok) throw new Error('Failed to fetch');
 
@@ -70,24 +72,25 @@ function ChannelPage() {
     fetchChannelData();
   }, [channelId]);
 
+    if (loading || !channelData) return <LoadingScreen />; // You can customize this
     return (
       <div className="channelPageContainer">
-
-        <div className="channelPageTitle" style={{backgroundImage:`url(${data.backDrop})`}}>
+        
+        <div className="channelPageTitle" style={{backgroundImage:`url(${channelData.channel_banner})`}}>
           <div className="channelInfoContainer">
             <div className="topRow">
-                <img src={data.logo} alt="" />
+                <img src={channelData.channel_photo} alt="" />
                 <div className="nameAndFCountContainer">
-                  <h3>{data.name}</h3>
+                  <h3>{channelData.channel_name}</h3>
                   <div className="followerCountRow">
-                    {data.ifPublic ? <Globe className="globe"/> : <Lock className="globe"/>}
-                    <span>{data.ifPublic ? "Public" : "Private"} · {data.numOfFollowers} followers</span>
+                    {!channelData.is_private ? <Globe className="globe"/> : <Lock className="globe"/>}
+                    <span>{channelData.is_private ? "Private" : "Public"} · {channelData.follower_count} followers</span>
                   </div>
                 </div>
-                <div className="ifFollowBtn">{data.ifFollow ? "Following" : "Follow"}</div>
+                <div className="ifFollowBtn">{channelData.is_followed ? "Following" : "Follow"}</div>
             </div>
             <div className="bottomRow">
-              <span className="summary">{data.summary}</span>
+              <span className="summary">{channelData.channel_desc}</span>
             </div>
           </div>
           <div className="titleBottomBar">
@@ -97,22 +100,22 @@ function ChannelPage() {
             </div>
           </div>
         </div>
-
+        {console.log(channelPosts.post)}
         <div className="channelPageBodyContainer">
-          {postData.map((post, index) => (
+          {channelPosts.post.map((post) => (
             <Post
-              key={index}
+              id={post.owner.id}
               channel={post.channel}
-              channelLogo={post.channelLogo}
+              channelLogo={post.school_photo}
               linkToChannel={post.linkToChannel}
-              time={post.time}
+              time={post.time_since_post}
               ifFollow={post.ifFollow}
               school={post.school}
               title={post.title}
-              bodySummary={post.bodySummary}
-              numOfLikes={post.numOfLikes}
-              numOfComments={post.numOfComments}
-              views={post.views}
+              bodySummary={post.content_preview}
+              numOfLikes={post.likes_count}
+              numOfComments={post.comments_count}
+              views={post.view_count}
               linkToPost={post.linkToPost}
             />
           ))}

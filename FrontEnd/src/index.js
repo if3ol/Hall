@@ -6,9 +6,10 @@ import Home from './components/Home';
 import './App.css';
 import LandingPage from './components/LandingPage';
 import ChannelPage from './components/ChannelPage';
+import { UserProvider } from './components/UserContext';
 
 const router = createBrowserRouter([
-  {path:'/', element:<Home />},
+  {path:'/', element:<LandingPage />},
   {path:'/home', element:<Home />},
   {path:'/discover', element:<DiscoverChannels />},
   {path:'/landing', element:<LandingPage />},
@@ -18,6 +19,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <UserProvider>
+      <RouterProvider router={router}/>
+    </UserProvider>
   </React.StrictMode>
 );
